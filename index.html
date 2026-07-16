@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blockchain Examination Quiz</title>
+  <style>
+    :root {
+      --bg: #f4f0e6;
+      --panel: #fffdf8;
+      --card: #ffffff;
+      --text: #1d2a2a;
+      --muted: #66706e;
+      --accent: #2f6f58;
+      --accent-soft: #dff2ea;
+      --border: #d9d2c3;
+      --correct: #e5f7ec;
+      --correct-border: #2c9b5f;
+      --wrong: #fde9e7;
+      --wrong-border: #cf4a3f;
+      --shadow: 0 20px 45px rgba(40, 52, 46, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(47, 111, 88, 0.16), transparent 28%),
+        radial-gradient(circle at top right, rgba(204, 176, 101, 0.15), transparent 24%),
+        linear-gradient(180deg, #f5f2e9 0%, #efe7d7 100%);
+      min-height: 100vh;
+    }
+
+    .shell {
+      width: min(1120px, calc(100% - 28px));
+      margin: 24px auto 48px;
+    }
+
+    .hero,
+    .results,
+    .quiz-stage,
+    .actions {
+      background: rgba(255, 253, 248, 0.9);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(217, 210, 195, 0.7);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 28px;
+   
+      top: 14px;
+      z-index: 10;
+      margin-bottom: 18px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+    }
+
+    h1 {
+      margin: 16px 0 8px;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      line-height: 1.05;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    .meter {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(217, 210, 195, 0.7);
+    }
+
+    .meter-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 14px;
+      border-radius: 999px;
+      background: #e8e0d1;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #3f8d6d, #d5aa45);
+      border-radius: inherit;
+      transition: width 0.25s ease;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .stat {
+      padding: 15px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(217, 210, 195, 0.7);
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 0.84rem;
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      font-size: 1.4rem;
+      font-weight: 800;
+    }
+
+    .results {
+      padding: 22px 24px;
+      margin-bottom: 18px;
+    }
+
+    .results.hidden { display: none; }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .result-box {
+      padding: 16px;
+      border-radius: 18px;
+      background: #fff;
+      border: 1px solid rgba(217, 210, 195, 0.8);
+    }
+
+    .quiz-stage {
+      padding: 24px;
+      margin-bottom: 18px;
+    }
+
+    .question {
+      padding: 18px 18px 16px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--card);
+      margin-bottom: 14px;
+    }
+
+    .question.correct {
+      background: var(--correct);
+      border-color: var(--correct-border);
+    }
+
+    .question.wrong {
+      background: var(--wrong);
+      border-color: var(--wrong-border);
+    }
+
+    .question:last-child { margin-bottom: 0; }
+    .question.hidden { display: none; }
+
+    .question-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .q-label {
+      font-size: 0.82rem;
+      color: var(--accent);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .q-points {
+      white-space: nowrap;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #f0eadc;
+      color: #6a5f4d;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .q-text {
+      font-size: 1.02rem;
+      line-height: 1.5;
+      font-weight: 600;
+    }
+
+    .options {
+      display: grid;
+      gap: 10px;
+    }
+
+    .option {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 1px solid #dfd8ca;
+      background: #fffdfa;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .option.correct-answer {
+      border-color: var(--correct-border);
+      background: #f0fbf4;
+    }
+
+    .option.wrong-answer {
+      border-color: var(--wrong-border);
+      background: #fff1ef;
+    }
+
+    .option input {
+      margin-top: 3px;
+      transform: scale(1.1);
+      accent-color: var(--accent);
+    }
+
+    .option-text {
+      flex: 1;
+      line-height: 1.45;
+    }
+
+    .text-answer {
+      width: 100%;
+      border: 1px solid #d8d0c2;
+      border-radius: 16px;
+      min-height: 58px;
+      padding: 14px 16px;
+      font: inherit;
+      resize: vertical;
+      background: #fffdfa;
+      color: var(--text);
+    }
+
+    .text-answer:focus {
+      outline: 2px solid rgba(47, 111, 88, 0.24);
+      border-color: var(--accent);
+    }
+
+    .feedback {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dashed rgba(102, 112, 110, 0.35);
+      display: none;
+    }
+
+    .feedback.show { display: block; }
+
+    .feedback-status {
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .feedback-status.correct { color: #1f7f4d; }
+    .feedback-status.wrong { color: #b4342a; }
+
+    .correct-answer-line {
+      color: #5b403d;
+      line-height: 1.45;
+    }
+
+    .actions {
+      padding: 20px;
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      position: sticky;
+      bottom: 14px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 999px;
+      padding: 14px 22px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.2s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+    button:active { transform: translateY(0); }
+
+    .submit-btn {
+      background: linear-gradient(135deg, #2f6f58, #204c3d);
+      color: #fff;
+    }
+
+    .next-btn {
+      background: linear-gradient(135deg, #d5aa45, #aa7e25);
+      color: #fff;
+    }
+
+    .reset-btn {
+      background: #efe4d2;
+      color: #4c3f2d;
+    }
+
+    .meta-strip {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 18px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(217, 210, 195, 0.7);
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    @media (max-width: 860px) {
+      .hero-grid,
+      .results-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        position: static;
+      }
+
+      .actions {
+        position: static;
+        flex-direction: column;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section class="hero">
+      <div class="eyebrow">Blockchain Examination</div>
+      <h1>Full Blockchain Quiz</h1>
+      <p class="subtitle">Answer one question at a time, get instant feedback, then move to the next one.</p>
+      <div class="hero-grid">
+        <div class="meter">
+          <div class="meter-head">
+            <span>Progress</span>
+            <span id="progressText">57 questions remaining</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+        </div>
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-label">Total Questions</div>
+            <div class="stat-value" id="totalQuestions">57</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Quiz Status</div>
+            <div class="stat-value" id="quizStatus">Open</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Answer Changes</div>
+            <div class="stat-value" id="changesStatus">Enabled</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Mode</div>
+            <div class="stat-value">Online</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="results hidden" id="results">
+      <div class="eyebrow">Results</div>
+      <h2 style="margin:16px 0 6px;">Quiz Evaluation</h2>
+      <p class="subtitle" id="resultsSummary">Finish the quiz to see your final score.</p>
+      <div class="results-grid">
+        <div class="result-box"><div class="stat-label">Total Correct</div><div class="stat-value" id="totalCorrect">0</div></div>
+        <div class="result-box"><div class="stat-label">Total Wrong</div><div class="stat-value" id="totalWrong">0</div></div>
+        <div class="result-box"><div class="stat-label">Score</div><div class="stat-value" id="scoreValue">0 / 57</div></div>
+        <div class="result-box"><div class="stat-label">Percentage</div><div class="stat-value" id="percentageValue">0%</div></div>
+      </div>
+    </section>
+
+    <main class="quiz-stage" id="quiz">
+      <div class="meta-strip">
+        <span id="questionPosition">Question 1 of 57</span>
+        <span id="sectionPosition">Section</span>
+      </div>
+      <div id="questionHost"></div>
+    </main>
+
+    <div class="actions">
+      <button class="submit-btn" id="checkBtn" type="button">Check Answer</button>
+      <button class="next-btn" id="nextBtn" type="button" disabled>Next Question</button>
+      <button class="reset-btn" id="resetBtn" type="button">Reset Quiz</button>
+    </div>
+  </div>
+
+  <script>
+    const agileSections = [
+      {
+        title: "Fundamentals",
+        code: "A1",
+        questions: [
+          { number: "1", type: "text", points: 8, prompt: "What was the reason for introducing Agile Computing (max. one phrases)?", answer: "Challenges posed by novel and exploratory projects that involve high uncertainty, rapid change, and collaborative problem-solving.", aliases: ["Challenges posed by novel and exploratory projects that involve high uncertainty, rapid change, and collaborative problem solving."] },
+          { number: "2", type: "checkbox", points: 2, prompt: "What are the overall goals of agility in project management?", options: ["Adhere strictly to the initial plan", "Respond to change", "Extensive customer involvement", "Avoid cross-functional collaboration"], answer: [1, 2] },
+          { number: "3", type: "radio", points: 1, prompt: "In Agile project management, what is measured as progress?", options: ["Completion of phases (design, coding, testing)", "Readiness of a feature for review and deployment by customers", "Meeting milestones on schedule"], answer: 1 },
+          { number: "4", type: "text", points: 8, prompt: "Explain the concept of continuous improvement in Agile project management (max. one phrase)?", answer: "Integrating customer feedback from each iteration into subsequent cycles to enhance the product over time. Focus on adapting to changing requirements and improving features based on continuous evaluation.", aliases: ["Integrating customer feedback from each iteration into subsequent cycles to enhance the product over time. Focus on adapting to changing requirements and improving features based on continuous evaluation"] },
+          { number: "5", type: "checkbox", points: 2, prompt: "What are the benefits of Agile project management compared to traditional approaches?", options: ["Increase in project scope", "Speed up delivery", "Reduce risk", "Add more complexity"], answer: [1, 2] },
+          { number: "6", type: "radio", points: 1, prompt: "How does Agile project management handle change management?", options: ["Through Integrated Change Control", "Through separate change request processes", "By integrating change into short cycles"], answer: 2 },
+          { number: "7", type: "checkbox", points: 2, prompt: "What are the primary values of the Agile Manifesto?", options: ["Individuals and interactions", "Process and tools", "Comprehensive documentation", "Responding to change"], answer: [0, 3] },
+          { number: "8", type: "text", points: 6, prompt: "Describe the concept of incremental approach in Agile project management (max. one phrase).", answer: "Involves developing a product in increments based on feature priority, which allows for frequent delivery of usable components and facilitates adaptation to changing requirements throughout the project lifecycle.", aliases: ["Involves developing a product in increments based on feature priority, which allows for frequent delivery of usable components and facilitates adaptation to changing requirements through the project lifecycle."] }
+        ]
+      },
+      {
+        title: "Agile principles",
+        code: "A2",
+        questions: [
+          { number: "1", type: "checkbox", points: 2, prompt: "According to agile principles, what is the primary measure of progress in software development?", options: ["Completion of project phases", "Customer satisfaction surveys", "Delivery of fully functional software", "Number of meetings held"], answer: [0, 2] },
+          { number: "2", type: "radio", points: 1, prompt: "What is a core principle of agile development regarding team motivation?", options: ["Delegating all decisions from the project leader", "Micromanaging each team member's work", "Encouraging team members to make decisions on their own"], answer: 2 },
+          { number: "3", type: "checkbox", points: 2, prompt: "What are key aspects of face-to-face communication in agile development?", options: ["It is always conducted in a formal meeting setting", "It is essential for effective information sharing among team members", "It is the primary communication method regardless of circumstances", "It is used alongside other communication media when necessary"], answer: [1, 3] },
+          { number: "4", type: "radio", points: 1, prompt: "What does sustaining a constant pace of development in agile encourage?", options: ["Irregular working hours", "Working overtime to meet deadlines", "Consistent and sustainable work hours"], answer: 2 },
+          { number: "5", type: "text", points: 6, prompt: "Explain the purpose of continuous attention to technical excellence in agile development (max. one phrase).", answer: "It ensures that the developed products meet high-quality standards, incorporate best practices, and remain adaptable to changing requirements.", aliases: ["It ensures that the developed products meet high quality standards, incorporate best practices, and remain adaptable to changing requirements."] }
+        ]
+      },
+      {
+        title: "From waterfall to agile",
+        code: "A3",
+        questions: [
+          { number: "1", type: "text", points: 6, prompt: "Describe the key differences between a waterfall model and an agile model in terms of their approach to software development (max. one phrase).", answer: "The waterfall model follows a linear, sequential approach where each phase (requirements, design, development, testing, deployment) is completed before moving to the next, with little room for revisiting or adapting previous phases, while the agile model emphasizes iterative development, continuous feedback, and flexibility to adapt to changing requirements.", aliases: ["The waterfall model follows a linear, sequential approach where each phase (requirements, design, development, testing, deployment) is completed before moving to the next, with little room for revisiting or adapting previous phases while the agile model emphasizes iterative development, continuous feedback, and flexibility to adapt to changing requirements."] },
+          { number: "2", type: "radio", points: 1, prompt: "What is a key limitation of the waterfall model regarding customer feedback?", options: ["Feedback is obtained early in the process", "Feedback is provided during development", "Feedback is obtained only after testing"], answer: 2 },
+          { number: "3", type: "radio", points: 1, prompt: "How does an incremental model differ from a traditional waterfall model?", options: ["It completes all development phases in a linear sequence", "It prioritizes features into must-have, should-have, and nice-to-have categories", "It releases working software only after all phases are completed"], answer: 1 }
+        ]
+      },
+      {
+        title: "Project plan",
+        code: "A4",
+        questions: [
+          { number: "1", type: "text", points: 6, prompt: "Describe the traditional role of a project plan (max. one phrase!).", answer: "Comprehensive documents that aids project managers in executing and overseeing project phases.", aliases: ["Comprehensive document that aids project managers in executing and overseeing project phases.", "Comprehensive documents that aid project managers in executing and overseeing project phases."] },
+          { number: "2", type: "text", points: 8, prompt: "Explain how an agile project plan differs from a plan used in a defined development model (max. one phrase!).", answer: "An agile project plan is viewed as a flexible guide that adapts to changing requirements.", aliases: ["An agile project plan is viewed as flexible guide that adapts to changing requirements.", "An agile project plan is viewed as a flexible guide that adapts to changing environments."] }
+        ]
+      },
+      {
+        title: "Agile triangle",
+        code: "A5",
+        questions: [
+          { number: "1", type: "radio", points: 1, prompt: "What does the agile iron triangle prioritize as the main fixed constraint for project success?", options: ["Scope", "Cost", "Schedule"], answer: 2 },
+          { number: "2", type: "checkbox", points: 2, prompt: "According to the agile iron triangle, what is the main goal of project success?", options: ["Adapting to fixed plans", "Meeting predefined scope and cost", "Delivering value to the customer", "Following a strict schedule"], answer: [0, 2] },
+          { number: "3", type: "text", points: 6, prompt: "Describe the key differences between the traditional iron triangle of constraints and the agile iron triangle (max. one phrase!).", answer: "The traditional iron triangle focuses on predefined scope, cost, and schedule as fixed constraints for project success, while the agile iron triangle emphasizes the ability to respond to change and deliver value to the customer, with scope and cost as variables.", aliases: ["The traditional iron triangle focuses on predefined scope, cost, and schedule as fixed constraints for project success, while the agile iron triangle emphasizes the ability to respond to change, deliver value to the customer, with scope and cost as variables."] }
+        ]
+      },
+      {
+        title: "Roles in agile teams",
+        code: "B1",
+        questions: [
+          { number: "1", type: "radio", points: 1, prompt: "Who assumes much of the responsibility of a traditional project manager in agile projects?", options: ["Business analyst", "Scrum master", "Project leader"], answer: 2 },
+          { number: "2", type: "checkbox", points: 2, prompt: "What responsibilities does a Scrum Master typically have in agile projects?", options: ["Delegating tasks to team members", "Tracking and monitoring project progress", "Managing cross-team coordination", "Coaching teams to achieve their goals"], answer: [1, 2] },
+          { number: "3", type: "text", points: 2, prompt: "Briefly describe the role of a product manager (or product owner) in agile projects (max. two phrases).", answer: "The role of a product manager (or product owner) in agile projects is to ensure that the delivered product meets customer requirements.", aliases: ["The role of a product manager (or product owner) in agile projects is to ensure that the delivered product meets customer requirements"] },
+          { number: "4", type: "checkbox", points: 2, prompt: "What is a key characteristic of T-shaped competence in agile teams?", options: ["Narrow focus on a specific field", "Lack of breadth of knowledge", "Ability to collaborate with specialists from other areas", "Depth of knowledge not only in one area"], answer: [2, 3] },
+          { number: "5", type: "text", points: 3, prompt: "Name the three variables used to calculate speed according to the concept of team velocity in agile projects (max. six words!).", answer: "Lead time, cycle time, response time.", aliases: ["Lead time, cycle time, response time", "Lead time cycle time response time"] }
+        ]
+      },
+      {
+        title: "Managing risks",
+        code: "C2",
+        questions: [
+          { number: "1", type: "checkbox", points: 2, prompt: "How does risk response planning differ in agile projects compared to traditional projects?", options: ["Conducted by project managers only", "Happens at the beginning of each project phase", "Involves the entire team and occurs more frequently", "Is less intensive than in traditional projects"], answer: [2, 3] },
+          { number: "2", type: "text", points: 8, prompt: "Describe key components of an \"exception plan\" in agile risk management (max. 20 words).", answer: "Circumstances for the exception, causes of the circumstance, tolerance limits, possible solutions, recommended solutions, request for stakeholder decision.", aliases: ["Circumstances for the exception, causes of the circumstance, tolerance limits, possible solutions, recommended solutions, request for stakeholder decision"] }
+        ]
+      },
+      {
+        title: "Analyzing, monitoring, and controlling risks",
+        code: "C3",
+        questions: [
+          { number: "1", type: "radio", points: 1, prompt: "How is risk analysis typically performed in agile projects?", options: ["Quantitative risk analysis", "Qualitative risk analysis", "Both quantitative and qualitative risk analysis"], answer: 1 },
+          { number: "2", type: "radio", points: 1, prompt: "What does a risk burndown chart track over time in an agile project?", options: ["Severity of different project risks", "Team velocity", "Customer satisfaction ratings"], answer: 0 },
+          { number: "3", type: "radio", points: 1, prompt: "What is the purpose of a spike in agile development?", options: ["To complete a user story", "To resolve technical uncertainties quickly", "To document project risks formally"], answer: 1 },
+          { number: "4", type: "radio", points: 1, prompt: "How are risks monitored in agile teams?", options: ["Recorded in a formal risk register", "Monitored using highly visible information radiators", "Discussed only during iteration review meetings"], answer: 1 },
+          { number: "5", type: "text", points: 6, prompt: "Explain the role of landing zones in agile risk management. Max. one phrase!", answer: "Landing zones define a range of acceptable product functionality and characteristics agreed between the team and customer during planning.", aliases: ["Landing zones define a range of acceptable product functionality and characteristics agreed between the team and customer during planning"] },
+          { number: "6", type: "text", points: 1, prompt: "How is a short sprint called, that usually is of fixed length and in which a team examines a solution and makes a prototype to demonstrate the feasibility of this solution? Max. one word!", answer: "Spike", aliases: ["spike"] }
+        ]
+      },
+      {
+        title: "Agile quality management",
+        code: "D3",
+        questions: [
+          { number: "1", type: "checkbox", points: 2, prompt: "Who is responsible for verifying and continually improving product quality in an agile project?", options: ["Developers", "Quality assurance staff only", "All project team members", "Project managers"], answer: [0, 2] },
+          { number: "2", type: "checkbox", points: 2, prompt: "What is the purpose of quality control in agile development?", options: ["Preventing defects", "Identifying and resolving defects", "Executing acceptance tests", "Writing and executing unit tests"], answer: [1, 3] },
+          { number: "3", type: "checkbox", points: 2, prompt: "Besides product quality, what are the other main areas where quality is important in agile projects?", options: ["Budget management", "Communications", "Human resources", "Conduct and compliance"], answer: [1, 3] },
+          { number: "4", type: "checkbox", points: 2, prompt: "What is technical debt in the context of agile projects?", options: ["Financial debt incurred by the project team", "Consequences of taking technical shortcuts during development", "Interest paid on project delays", "Quality defects identified during testing"], answer: [1, 3] },
+          { number: "5", type: "text", points: 8, prompt: "Explain the concept of \"escaped defects\" in quality assurance. Max. one phrase!", answer: "It refers to defects that have bypassed quality assurance processes and have been identified after the product is released or during subsequent iterations.", aliases: ["It refers to defects that have bypassed quality assurance processes and have been identified after the product is released or during subsequent iterations"] }
+        ]
+      },
+      {
+        title: "Agile contracts",
+        code: "E1",
+        questions: [
+          { number: "1", type: "checkbox", points: 2, prompt: "Why are fixed-price contracts generally not considered suitable for agile projects?", options: ["They allow for flexibility in scope", "They align well with changing requirements", "They place risk on the project team", "They do not sufficiently address customer requirements"], answer: [2, 3] },
+          { number: "2", type: "checkbox", points: 2, prompt: "Which type of contract operates on a pay-as-you-use basis in agile projects?", options: ["Fixed-price contract", "Cost-reimbursable contract", "Service contract", "Time-and-materials contracts"], answer: [1, 3] }
+        ]
+      },
+      {
+        title: "Misconceptions about agility",
+        code: "E2",
+        questions: [
+          { number: "1", type: "checkbox", points: 2, prompt: "Which myths about agile project management are commonly misconceived?", options: ["Agile project management can't work with other plan-driven or process models", "Agile project management requires no documentation.", "Agile project management is specific to software development.", "Agile projects don't require planning."], answer: [0, 2] },
+          { number: "2", type: "checkbox", points: 2, prompt: "What misconceptions exist about documentation in agile project management?", options: ["Agile projects require comprehensive documentation.", "Agile teams don't create any documentation.", "Agile projects involve excessive planning documents.", "Agile projects require detailed work breakdown structures."], answer: [1, 3] },
+          { number: "3", type: "checkbox", points: 2, prompt: "How should organizations approach transitioning from traditional to agile project management?", options: ["Abandon all traditional practices immediately.", "Combine agile and traditional principles gradually.", "Stick exclusively to agile practices.", "Implement agile practices without any planning."], answer: [1, 3] },
+          { number: "4", type: "text", points: 8, prompt: "Summarize the key points about the relationship between agility and Capability Maturity Model Integration (CMMI).", answer: "While CMMI provides discipline through defined process areas, goals, and practices for process enhancement, agile methodologies emphasize flexibility, customer value, and iterative development.", aliases: ["While CMMI provides discipline through defined process areas, goals, and practices for process enhancement, agile methodologies emphasize flexibility, customer value, and iterative development"] }
+        ]
+      },
+      {
+        title: "Transition to agility",
+        code: "F1",
+        questions: [
+          { number: "1", type: "text", points: 8, prompt: "What does the term \"project criticality\" refer to? (max. one phrase!)", answer: "Project criticality refers to the severity of the impact a project's failure could have on stakeholders, such as customers.", aliases: ["Project criticality refers to the severity of the impact a project's failure could have on stakeholders such as customers.", "Project criticality refers to the severity of the impact a project's failure could have on stakeholders, such as customers"] },
+          { number: "2", type: "radio", points: 1, prompt: "What type of organizational structure is most conducive to implementing an agile methodology?", options: ["Cooperative", "Hybrid of hierarchical and cooperative", "Project-based"], answer: 0 },
+          { number: "3", type: "radio", points: 1, prompt: "What does the term \"project criticality\" refer to?", options: ["The size and complexity of a project", "The severity of impact a project's failure could have", "The level of stakeholder involvement in a project"], answer: 1 },
+          { number: "4", type: "checkbox", points: 2, prompt: "What characteristics make a project best suited for an agile methodology?", options: ["Low level of internal uncertainty", "Lack of a well-defined scope", "Requires ongoing customer feedback", "Does not require frequent reviews and adjustments"], answer: [1, 2] },
+          { number: "5", type: "checkbox", points: 2, prompt: "What are some potential impacts of using an agile methodology on a project?", options: ["Weakly defined development cycles", "Improved quality and efficiency", "Avoidance of unnecessary communication", "Better customer satisfaction"], answer: [1, 3] },
+          { number: "6", type: "text", points: 8, prompt: "Why is continuous customer involvement crucial in agile methodologies? (max. one phrase!)", answer: "This ensures that requirements can evolve as work progresses and that the final product meets the customer's needs effectively.", aliases: ["This ensures that requirements can evolve as work progresses and that the final product meets the customers needs effectively.", "This ensures that requirements can evolve as work progresses and that the final product meets the customer's needs effectively"] },
+          { number: "7", type: "checkbox", points: 2, prompt: "When is an agile approach especially suitable for a project?", options: ["When a project has a well-defined scope", "When a project involves a high level of internal uncertainty", "When a project benefits from customer feedback", "When a project has a rigid and fixed timeline"], answer: [1, 2] },
+          { number: "8", type: "checkbox", points: 2, prompt: "Which structural and cultural characteristics are likely to make it easier for an organization to transition into using an agile methodology?", options: ["Employees work in small teams and are accustomed to deciding how best to complete their tasks", "Employees have clear roles and are given detailed work instructions", "Employees do not compete with one another to achieve the best results", "Employees are given only the information they need to get their work done"], answer: [0, 2] }
+        ]
+      },
+      {
+        title: "Scrum",
+        code: "G1",
+        questions: [
+          { number: "1", type: "text", points: 2, prompt: "Who in the Scrum team is responsible to provide a clear vision for the product to be developed? Max. words!", answer: "Product Owner", aliases: ["product owner"] },
+          { number: "2", type: "radio", points: 1, prompt: "Who in the Scrum team is responsible for ensuring that the product delivered as part of a project meets customer requirements? This role is often assumed by a local customer or a customer representative.", options: ["Lead programmer", "Project Manager", "Product Owner"], answer: 2 },
+          { number: "3", type: "checkbox", points: 2, prompt: "What do you expect from a Scrum master?", options: ["She/he ensures that new product features are explained to the customer clearly and in a catchy manner.", "She/he explains to customers the needs and constraints of the project team.", "She/he is responsible for tracking and monitoring project progress.", "She/he helps team members achieve project goals and ensures that a project is moving in the right direction."], answer: [2, 3] },
+          { number: "4", type: "radio", points: 1, prompt: "How is the meeting called in which team members discuss what was done during the previous 24 hours, what will happen during the next 24 hours, and any obstacles that have arisen?", options: ["Sprint standup", "Daily standby meeting", "Daily Scrum"], answer: 2 },
+          { number: "5", type: "text", points: 2, prompt: "How is a meeting called in Scrum that takes place in large projects with multiple teams, to coordinate work of the teams? Max. three words!", answer: "Scrums of Scrums", aliases: ["Scrum of Scrums", "scrums of scrums"] },
+          { number: "6", type: "text", points: 2, prompt: "How is the Scrum activity called where the team defines the tasks and goals for the upcoming iteration? Max. two words!", answer: "Sprint Planning", aliases: ["sprint planning"] },
+          { number: "7", type: "checkbox", points: 2, prompt: "In a Scrum team, Mike is responsible for ensuring that the product delivered as part of a project meets customer requirements. What kind of roles/responsibilities has Mike in the Scrum team?", options: ["He is the product owner.", "He is responsible for tracking and monitoring project progress.", "He is the main author of user stories", "He organizes the burn-down charts."], answer: [0, 2] },
+          { number: "8", type: "radio", points: 1, prompt: "In Scrum teams, there is usually one person that helps team members achieve project goals and ensures that a project is moving in the right direction. Which role has this person usually in Scrum teams?", options: ["Scrum master", "Project Leader", "Project Manager"], answer: 0 },
+          { number: "9", type: "text", points: 3, prompt: "What is the name of a meeting at the end of each sprint in which the Scrum team, along with Scrum Master, Product Owner, and Developers, evaluate the results of the sprint. Max. three words!", answer: "Sprint Review Meeting", aliases: ["Sprint Review", "sprint review meeting"] },
+          { number: "10", type: "text", points: 2, prompt: "Who in the Scrum team measures how well a project performs in terms of return on investment, or ROI? Max. two words!", answer: "Product Owner", aliases: ["product owner"] },
+          { number: "11", type: "text", points: 2, prompt: "What is the name of the role the Scrum master adopts in order to facilitate collaboration, support everyone's best thinking and work, encourage the team's participation, understanding, and shared responsibility, and change or remove organizational impediments? Max. two words!", answer: "Servant Leader", aliases: ["servant leader"] },
+          { number: "12", type: "checkbox", points: 2, prompt: "Which are charcteristics of the optimal Scrum team?", options: ["Self-reliant", "Cross-competent", "Self-organizing", "Cross-functional"], answer: [2, 3] },
+          { number: "13", type: "text", points: 2, prompt: "After each sprint review meeting, the Scrum Master conducts a meeting with the development team to discuss how the sprint went and how it could have been improved. How is this meeting called? Max. 1 words!", answer: "Sprint Retrospective", aliases: ["sprint retrospective"] },
+          { number: "14", type: "checkbox", points: 2, prompt: "To track its progress, a Scrum team uses which instruments?", options: ["Story points burndowns", "Burnup charts", "Progressive charts", "Burndown charts"], answer: [1, 3] },
+          { number: "15", type: "radio", points: 1, prompt: "As well as charts, you can use various metrics to track and report on the progress of a Scrum project. Which of the following is a valid matric used in Scrum?", options: ["lines of code", "standards violation", "scrum points"], answer: 2 }
+        ]
+      },
+      {
+        title: "Phases in agile projects",
+        code: "H1",
+        questions: [
+          { number: "1", type: "text", points: 5, prompt: "The agile project management cycle differs from the traditional project management cycle. It usually contains five phases. Name the five phases in the correct order? Max. five words!", answer: "Envisioning - speculation - exploring - adapting - closing.", aliases: ["Envisioning - speculation - exploring - adapting - closing", "Envisioning speculation exploring adapting closing"] },
+          { number: "2", type: "checkbox", points: 2, prompt: "Identify the differences between the agile adapting and traditional Controlling phases.", options: ["Adapting involves reassessing project deliverables whereas Controlling involves working according to a pre-defined project plan", "Adapting begins when the product meets all customer specifications whereas Controlling involves planning every phase of a project", "Adapting involves coordinating project work whereas Controlling involves reassessing deliverables", "Adapting begins when project objectives are determined whereas Controlling begins when a detailed project plan is created"], answer: [0, 2] },
+          { number: "3", type: "radio", points: 1, prompt: "What is the primary focus during the envisioning phase of an agile project?", options: ["Creating a detailed project plan", "Determining and refining the project's vision and scope", "Managing team interactions with stakeholders"], answer: 1 },
+          { number: "4", type: "checkbox", points: 2, prompt: "How does the closing phase in agile projects differ from traditional project management?", options: ["It involves completing all project work and recording lessons learned", "It only begins after several iterations with deliverables handed to the customer", "It focuses primarily on handing over final deliverables to the project sponsor", "It is not typically included in agile project methodologies"], answer: [1, 2] },
+          { number: "5", type: "checkbox", points: 2, prompt: "What are some key differences between agile and traditional project management phases?", options: ["Agile projects emphasize ongoing customer involvement and iterative review", "Traditional projects often have a fixed, detailed project scope from the start", "Agile teams are self-organizing and require extensive customer involvement", "Traditional projects focus more on executing according to a predefined plan"], answer: [0, 1] },
+          { number: "6", type: "text", points: 2, prompt: "Which phase of an agile project involves designing, building, and testing features in increments useful for the customer? Max. one word!", answer: "Exploring", aliases: ["exploring"] },
+          { number: "7", type: "radio", points: 1, prompt: "What activities are typically conducted during the speculating phase in agile projects?", options: ["Building and testing features", "Developing rough project and release plans", "Adapting product features based on feedback"], answer: 1 },
+          { number: "8", type: "text", points: 6, prompt: "In the adapting phase of an agile project, what are the primary responsibilities of the project leader? Max. one phrase!", answer: "Make adjustment based feedback and team dynamics.", aliases: ["Make adjustments based on feedback and team dynamics.", "Make adjustment based on feedback and team dynamics."] }
+        ]
+      },
+      {
+        title: "Agile methods",
+        code: "I1",
+        questions: [
+          { number: "1", type: "text", points: 6, prompt: "Name three important principles propagated by XP. Max. ten words!", answer: "Pair programming, sustainable pace, ongoing automated testing.", aliases: ["Pair programming, sustainable pace, ongoing automated testing", "Pair programming sustainable pace ongoing automated testing"] },
+          { number: "2", type: "text", points: 2, prompt: "Which methodology encourages no more than 40 hours of work per week to maintain a sustainable work pace? Max. two words!", answer: "Extreme Programming", aliases: ["XP", "extreme programming"] },
+          { number: "3", type: "radio", points: 1, prompt: "The Adaptive Software Development (ASD) methodology consists of which of the following phases?", options: ["Analyze, Build, Control", "Speculate, Collaborate, Learn", "Plan, Do, Check"], answer: 1 },
+          { number: "4", type: "text", points: 2, prompt: "How is a project in the Crystal methodology called that includes up to around six members and these members are all expected to be co-located? Max. two words!", answer: "Crystal clear", aliases: ["Crystal Clear", "crystal clear"] },
+          { number: "5", type: "radio", points: 1, prompt: "Which stage is part of the Dynamic Systems Development Method (DSDM) project life cycle?", options: ["Initial Planning", "Business Study", "Post-Implementation Review"], answer: 1 },
+          { number: "6", type: "radio", points: 1, prompt: "Which methodology encourages no more than 40 hours of work per week to maintain a sustainable work pace?", options: ["Scrum", "XP", "FDD"], answer: 1 },
+          { number: "7", type: "text", points: 1, prompt: "How is the phase in ASD called that includes feedback from end users who've tried using the developed software? Max. one word!", answer: "Learn", aliases: ["learn"] },
+          { number: "8", type: "text", points: 6, prompt: "What are the specific roles defined in a Crystal Clear project team? Max. five words!", answer: "sponsor, senior designer, programmer", aliases: ["Sponsor, senior designer, programmer", "sponsor senior designer programmer"] },
+          { number: "9", type: "radio", points: 1, prompt: "What is a core principle of Lean software development?", options: ["Encouraging long development cycles", "Emphasizing unnecessary documentation", "Focusing on system integrity"], answer: 2 },
+          { number: "10", type: "radio", points: 1, prompt: "According to Lean development, how does the principle of 'deliver software quickly' translate into practice?", options: ["Anticipating future customer needs", "Identifying and maintaining bottlenecks in the process", "Planning smaller releases of software after shorter periods"], answer: 2 },
+          { number: "11", type: "text", points: 6, prompt: "Briefly explain the principle of 'eliminate waste' in Lean development. Max. one phrase!", answer: "Removing unnecessary activities, documentation, and product features that do not add direct value to the end product.", aliases: ["Removing unnecessary activities, documentation, and product features that do not add direct value to the end product"] },
+          { number: "12", type: "text", points: 6, prompt: "What is meant by 'sustainable pace' in the context of XP? Max. one phrase!", answer: "Practice of team members working no more than 40 hours per week to ensure consistent and reliable delivery of software, avoiding burnout and maintaining high-quality output.", aliases: ["Practice of team members working no more than 40 hours per week to ensure consistent and reliable delivery of software, avoiding burnout and maintaining high quality output."] },
+          { number: "13", type: "radio", points: 1, prompt: "What is a distinguishing feature of Feature-driven development (FDD)?", options: ["It is unstructured but highly adaptive.", "It emphasizes a business perspective more than a technical one.", "It provides a prescriptive model that is managed at the level of individual features"], answer: 2 }
+        ]
+      }
+    ];
+
+    const textQuestion = (number, prompt, answer, points = 1, aliases = []) => ({
+      number,
+      type: "text",
+      points,
+      prompt,
+      answer,
+      aliases: [answer.toLowerCase(), ...aliases]
+    });
+    const radioQuestion = (number, prompt, options, answer, points = 1) => ({ number, type: "radio", points, prompt, options, answer });
+    const checkboxQuestion = (number, prompt, options, answer, points = 2) => ({ number, type: "checkbox", points, prompt, options, answer });
+
+    const sections = [{ title: "Blockchain examination", code: "A-E", questions: [
+      radioQuestion("1", "What is true about the concept of peer-to-peer networks?", [
+        "Peer-to-peer applications allow their users to control how many node connections should be searched for or allowed at the same time.",
+        "A peer-to-peer network is a centralized communication model that can establish communication to all other nodes.",
+        "The computers of some users are both providers and consumers of resources."
+      ], 0),
+      checkboxQuestion("2", "What are advantages of peer-to-peer networks?", [
+        "Single point of failure",
+        "Mutability",
+        "Velocity",
+        "Transparency"
+      ], [2, 3]),
+      radioQuestion("3", "What is true about blockchains?", [
+        "The user's IP address is used to create an alphanumeric string called a hash (a type of unique fingerprint of the transaction).",
+        "After the first block is created, each subsequent block in the ledger uses the timestamp of the previous block to calculate its own timestamp.",
+        "Consensus ensures that all copies of the distributed ledger use the same state."
+      ], 2),
+      checkboxQuestion("4", "What is true about distributed ledger technology?", [
+        "Distributed ledger technologies slow down transactions by integrating a central instance.",
+        "Distributed ledgers have the tendency to raise costs per transaction.",
+        "Distributed ledger technology creates a system that is more difficult to manipulate or successfully attack.",
+        "Distributed ledgers have neither a central data store nor centralized management functions."
+      ], [2, 3]),
+      checkboxQuestion("5", "What are the primary advantages of decentralized systems compared to centralized ones?", [
+        "Higher coordination effort",
+        "Lower security concerns",
+        "Higher reliability",
+        "Higher computing power"
+      ], [2, 3]),
+      textQuestion("6", "Explain distributed ledger technology in a few words. Max. 8 words!", "Decentralized data storage and transmission across networked computers.", 4),
+      textQuestion("7", "List potential benefits of distributed ledger technology. Max. ten words!", "Faster transactions, reduced costs, enhanced security, and improved transparency.", 5),
+      radioQuestion("8", "What is a characteristic of peer-to-peer (P2P) networks?", [
+        "They rely on a central coordination point.",
+        "They have strict user control over network parameters.",
+        "Each node has the same capabilities and can establish communication with all other nodes."
+      ], 2),
+      checkboxQuestion("9", "What are the disadvantages of distributed systems compared to central individual computers?", [
+        "Coordination effort",
+        "Communication effort",
+        "Lower security concerns",
+        "Higher reliability"
+      ], [0, 1]),
+      radioQuestion("10", "What is a primary characteristic of blockchain technology?", [
+        "It relies on a centralized database.",
+        "It has a single point of failure.",
+        "It enables distributed and tamper-proof data management."
+      ], 2),
+      textQuestion("11", "Describe primary characteristics of blockchain or distributed ledger. Max. 8 words!", "Decentralized, tamper-proof data storage and transmission.", 4),
+      textQuestion("12", "What means SPOF in the context of network architectures? Max. five words!", "Single point of failure.", 3, ["single point of failure"]),
+      radioQuestion("13", "The actor who solves the hash puzzle represents the majority and is thus allowed to propose a transaction for posting to the blockchain. How is this mechanism called?", [
+        "Proof-of-work",
+        "Proof-of-majority",
+        "Proof-of-honesty"
+      ], 0),
+      checkboxQuestion("14", "Choosing the consensus algorithm to use is perhaps the most important aspect when choosing a blockchain platform. Of the following which are valid standard methods?", [
+        "Proof-of-word",
+        "Proof-of-reliability",
+        "Proof-of-honesty",
+        "Proof-of-authority"
+      ], [2, 3]),
+      radioQuestion("15", "What type of blockchain requires explicit access authorization?", [
+        "Public blockchain",
+        "Private blockchain",
+        "All blockchains"
+      ], 1),
+      checkboxQuestion("16", "What are the characteristics of cryptocurrency transactions?", [
+        "They can be carried out without a digital wallet.",
+        "They can be used independently from central banks.",
+        "They require physical representation of currency.",
+        "They use strongly encrypted hash codes."
+      ], [1, 3]),
+      textQuestion("17", "What is the consequence of changing a block's information in a blockchain? Max. six words!", "Breaks the hash sequence, disrupting consensus.", 4),
+      textQuestion("18", "What happens if consensus is not reached in a blockchain network? Max. ten words!", "No new blocks are added until the issue is resolved.", 4),
+      radioQuestion("19", "What is primarily used to manage blockchain transaction data and status?", [
+        "Decentralized applications",
+        "Traditional databases",
+        "Business logic"
+      ], 2),
+      checkboxQuestion("20", "Blockchain technology is seen as a means to improve which of the following?", [
+        "Supply chain transparency",
+        "Voting systems",
+        "News channels",
+        "None of the above"
+      ], [0, 1]),
+      textQuestion("21", "Why do many organizations prefer private blockchain systems? Max. six words!", "Control over access and customization.", 4),
+      textQuestion("22", "What fundamental aspect does blockchain provide for business transactions?", "Trust and robust transaction processing.", 4),
+      radioQuestion("23", "What does the Byzantine Generals Problem illustrate in the context of blockchain?", [
+        "The need for simultaneous actions in a transaction",
+        "The challenges of achieving consensus among distributed peers",
+        "The importance of encryption in communications"
+      ], 1),
+      textQuestion("24", "How is the immutability of the blockchain ledger achieved? Max. one phrase!", "The ledger is tamper-proof, ensuring no participant can alter entries once they are saved, and it is managed to be immune to attacks.", 6),
+      checkboxQuestion("25", "Which aspects are critical to maintaining integrity in blockchain systems?", [
+        "Knowledge of the number of peers",
+        "Knowledge of the trustworthiness of peers",
+        "Use of public ledgers",
+        "Use of private keys"
+      ], [1, 3]),
+      checkboxQuestion("26", "What are primary threats to integrity in peer-to-peer blockchain systems?", [
+        "Encryption vulnerabilities",
+        "Malicious actors",
+        "Technical failures",
+        "High transaction fees"
+      ], [1, 2]),
+      radioQuestion("27", "What is essential for proof of ownership in blockchain technology?", [
+        "Identification of the object only",
+        "Assignment of the owner to the object only",
+        "Identification of the owner and the object"
+      ], 2),
+      textQuestion("28", "How does blockchain prevent double spending of digital assets? Max. 15 words!", "By synchronizing ledgers to update all transactions in real-time, preventing unauthorized repeats.", 6),
+      textQuestion("29", "What are key design features of ledgers in blockchain for untrusted environments? Max. 12 words!", "Ledgers are immutable and distributed, ensuring secure and shared transaction histories.", 6),
+      checkboxQuestion("30", "Which tasks must blockchain software manage in a peer-to-peer environment?", [
+        "Managing interaction between nodes",
+        "Capturing the transfer of ownership",
+        "Resolving conflicts between transaction histories",
+        "Enhancing the speed of transaction verification"
+      ], [1, 2]),
+      radioQuestion("31", "What does semantic correctness in transaction processing focus on?", [
+        "The time a transaction is executed.",
+        "The intended effect of transaction data.",
+        "The fee payable for executing a transaction."
+      ], 1),
+      radioQuestion("32", "What does double spending exploit in blockchain systems?", [
+        "The anonymity of transactions",
+        "The physical nature of digital assets",
+        "The time delay in updating and synchronizing transaction information"
+      ], 2),
+      textQuestion("33", "What must be verified to ensure the correct transfer of ownership in blockchain transactions? Max. five words!", "Owner's consent and authorization.", 4),
+      textQuestion("34", "Connecting hash references to a tree is very useful for grouping many different pieces of data that are available at the same time and making them accessible through a single hash reference. How is this tree structure often called in blockchain? Max. two words!", "Merkle Tree.", 2, ["merkle tree"]),
+      checkboxQuestion("35", "Which of the following are criteria for adding transaction data to the Blockchain?", [
+        "Formal correctness.",
+        "Semantic correctness.",
+        "Amount of fee paid.",
+        "Hash authorization."
+      ], [0, 1]),
+      textQuestion("36", "What is the purpose of using cryptographic hash functions for data security in blockchains? Max. ten words!", "To ensure data integrity and detect any changes.", 6),
+      radioQuestion("37", "What is the primary function of hash references in maintaining data integrity?", [
+        "To speed up data retrieval",
+        "To ensure that referenced data has not been altered",
+        "To increase the data storage capacity"
+      ], 1),
+      radioQuestion("38", "How do corrupted hash references indicate data integrity issues?", [
+        "They enhance data encryption.",
+        "They suggest data has been altered after the reference was created.",
+        "They have no impact on data integrity."
+      ], 1),
+      checkboxQuestion("39", "Which properties of cryptographic hash functions are essential for blockchain security?", [
+        "Deterministic nature",
+        "Reverse engineering capability",
+        "Collision-proof characteristics",
+        "Predictability of hash values"
+      ], [0, 2]),
+      radioQuestion("40", "What is the significance of the head of the chain in a dynamic record structure?", [
+        "It is irrelevant to the structure.",
+        "It references the most recently added record.",
+        "It encrypts the entire data chain."
+      ], 1),
+      textQuestion("41", "Describe the role of hash puzzles in blockchain. Max. three words!", "Proof of work.", 2, ["proof of work"]),
+      textQuestion("42", "Explain the significance of Merkle trees. Max. four words!", "Efficient grouping and access.", 3),
+      checkboxQuestion("43", "What distinguishes asymmetric cryptography from symmetric cryptography?", [
+        "It uses the same key for encryption and decryption.",
+        "It relies on a single key for encryption and decryption.",
+        "It utilizes two complementary keys for encryption and decryption.",
+        "It employs complex algorithms for data transmission."
+      ], [2, 3]),
+      checkboxQuestion("44", "What are the primary functions of public and private keys in asymmetric cryptography?", [
+        "Identifying account owners and decrypting messages.",
+        "Encrypting messages and ensuring data integrity.",
+        "Creating digital signatures and encrypting data.",
+        "Decrypting messages and authorizing transactions."
+      ], [0, 3]),
+      textQuestion("45", "Describe the main steps of creating a digital signature in asymmetric cryptography. Max. four words!", "transaction, hash, encrypt, link", 4),
+      textQuestion("46", "Explain briefly how digital signatures verify the authenticity of messages. Max. six words!", "Create hash, decrypt signature, compare hashes.", 6),
+      radioQuestion("47", "What is the primary purpose of a private key in asymmetric cryptography?", [
+        "Identifying account owners.",
+        "Encrypting messages.",
+        "Decrypting encrypted text."
+      ], 2),
+      radioQuestion("48", "What is the role of the public key in secure communication using asymmetric cryptography?", [
+        "Encrypting messages for the sender.",
+        "Decrypting messages for the sender.",
+        "Decrypting messages for the receiver."
+      ], 2),
+      textQuestion("49", "How does asymmetric cryptography ensure ownership transfer in blockchain transactions? Max. six words!", "By signing and verifying transactions.", 4),
+      radioQuestion("50", "What happens if a hash reference within a block header is modified?", [
+        "Only the block header becomes invalid.",
+        "The entire block becomes invalid.",
+        "Only the referenced transaction becomes invalid."
+      ], 1),
+      textQuestion("51", "What is the main drawback of Proof of Work (PoW) consensus mechanism? Max. six words!", "High energy consumption and computational intensity.", 6),
+      textQuestion("52", "What is the purpose of selecting the longest or heaviest chain?", "To determine the authoritative version of the transaction history.", 6),
+      textQuestion("53", "What is a smart contract? Give a brief definition (max. one phrase).", "A smart contract is a computer protocol that determines interactions between actors in any type of blockchain.", 4),
+      textQuestion("54", "What distinguishes public and private blockchains? Max. five words!", "Access permissions and consensus mechanisms.", 4),
+      radioQuestion("55", "Which consensus mechanism is suitable for private blockchains with a central authority?", [
+        "Proof-of-Authority (PoA)",
+        "Proof-of-Work (PoW)",
+        "Proof-of-Stake (PoS)"
+      ], 0),
+      radioQuestion("56", "What type of transactions can smart contracts enable?", [
+        "Microtransactions for different types of billing",
+        "Macrotransactions for large-scale investments",
+        "Transactional contracts for government projects"
+      ], 0),
+      radioQuestion("57", "Which parameter presents a challenge in the design of blockchain applications?", [
+        "Balancing security, scalability, and decentralization",
+        "Achieving high network speeds",
+        "Minimizing energy consumption"
+      ], 0)
+    ]}];
+
+    const questionHost = document.getElementById("questionHost");
+    const resultsEl = document.getElementById("results");
+    const progressText = document.getElementById("progressText");
+    const progressFill = document.getElementById("progressFill");
+    const quizStatus = document.getElementById("quizStatus");
+    const changesStatus = document.getElementById("changesStatus");
+    const questionPosition = document.getElementById("questionPosition");
+    const sectionPosition = document.getElementById("sectionPosition");
+    const checkBtn = document.getElementById("checkBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const totalQuestionCount = sections.reduce((sum, section) => sum + section.questions.length, 0);
+    document.getElementById("totalQuestions").textContent = totalQuestionCount;
+
+    const flatQuestions = sections.flatMap(section =>
+      section.questions.map(question => ({
+        ...question,
+        sectionTitle: section.title,
+        sectionCode: section.code
+      }))
+    );
+
+    let currentIndex = 0;
+    let checkedCurrent = false;
+    let score = { correct: 0, wrong: 0 };
+    let completed = false;
+
+    function normalizeText(value) {
+      return value
+        .toLowerCase()
+        .replace(/[“”]/g, "\"")
+        .replace(/[‘’]/g, "'")
+        .replace(/[^a-z0-9\s'-]/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function getCorrectAnswerText(question) {
+      if (question.type === "radio") return question.options[question.answer];
+      if (question.type === "checkbox") return question.answer.map(index => question.options[index]).join("; ");
+      return question.answer;
+    }
+
+    function updateProgress() {
+      const remaining = totalQuestionCount - currentIndex;
+      const percent = (currentIndex / totalQuestionCount) * 100;
+      progressText.textContent = completed ? "0 questions remaining" : `${remaining} question${remaining === 1 ? "" : "s"} remaining`;
+      progressFill.style.width = `${percent}%`;
+      questionPosition.textContent = completed ? `Completed ${totalQuestionCount} of ${totalQuestionCount}` : `Question ${currentIndex + 1} of ${totalQuestionCount}`;
+      sectionPosition.textContent = completed ? "Quiz finished" : `${flatQuestions[currentIndex].sectionCode} ${flatQuestions[currentIndex].sectionTitle}`;
+      quizStatus.textContent = completed ? "Finished" : "In Progress";
+      changesStatus.textContent = checkedCurrent ? "Locked" : "Enabled";
+    }
+
+    function renderQuestion() {
+      const question = flatQuestions[currentIndex];
+      checkedCurrent = false;
+      nextBtn.disabled = true;
+      nextBtn.textContent = currentIndex === totalQuestionCount - 1 ? "Finish Quiz" : "Next Question";
+      checkBtn.disabled = false;
+      checkBtn.style.opacity = "1";
+      checkBtn.style.cursor = "pointer";
+
+      const wrapper = document.createElement("article");
+      wrapper.className = "question";
+      wrapper.dataset.type = question.type;
+
+      const head = document.createElement("div");
+      head.className = "question-head";
+      head.innerHTML = `
+        <div>
+          <div class="q-label">${question.sectionTitle} ${question.number}</div>
+          <div class="q-text">${question.prompt}</div>
+        </div>
+        <div class="q-points">[${question.points}]</div>
+      `;
+      wrapper.appendChild(head);
+
+      if (question.type === "radio" || question.type === "checkbox") {
+        const optionsWrap = document.createElement("div");
+        optionsWrap.className = "options";
+        question.options.forEach((option, optionIndex) => {
+          const label = document.createElement("label");
+          label.className = "option";
+          label.dataset.optionIndex = optionIndex;
+          label.innerHTML = `
+            <input type="${question.type}" name="current-question" value="${optionIndex}" />
+            <span class="option-text">${option}</span>
+          `;
+          optionsWrap.appendChild(label);
+        });
+        wrapper.appendChild(optionsWrap);
+      } else {
+        const textarea = document.createElement("textarea");
+        textarea.className = "text-answer";
+        textarea.rows = 3;
+        textarea.placeholder = "Type your answer here...";
+        wrapper.appendChild(textarea);
+      }
+
+      const feedback = document.createElement("div");
+      feedback.className = "feedback";
+      feedback.innerHTML = `
+        <div class="feedback-status"></div>
+        <div class="correct-answer-line"></div>
+      `;
+      wrapper.appendChild(feedback);
+
+      questionHost.innerHTML = "";
+      questionHost.appendChild(wrapper);
+      updateProgress();
+    }
+
+    function evaluateText(question, userValue) {
+      const normalizedUser = normalizeText(userValue);
+      const accepted = [question.answer, ...(question.aliases || [])].map(normalizeText);
+      return accepted.includes(normalizedUser);
+    }
+
+    function lockCurrentInputs() {
+      questionHost.querySelectorAll("input, textarea").forEach(el => {
+        el.disabled = true;
+      });
+      changesStatus.textContent = "Locked";
+    }
+
+    function checkCurrentAnswer() {
+      if (checkedCurrent || completed) return;
+
+      const question = flatQuestions[currentIndex];
+      const questionEl = questionHost.querySelector(".question");
+      const feedback = questionEl.querySelector(".feedback");
+      const status = feedback.querySelector(".feedback-status");
+      const answerLine = feedback.querySelector(".correct-answer-line");
+
+      let isCorrect = false;
+
+      if (question.type === "radio") {
+        const selected = questionEl.querySelector("input:checked");
+        if (!selected) return;
+        const selectedIndex = Number(selected.value);
+        isCorrect = selectedIndex === question.answer;
+        questionEl.querySelectorAll(".option").forEach(option => {
+          const idx = Number(option.dataset.optionIndex);
+          if (idx === question.answer) option.classList.add("correct-answer");
+          if (selectedIndex === idx && selectedIndex !== question.answer) option.classList.add("wrong-answer");
+        });
+      } else if (question.type === "checkbox") {
+        const checked = Array.from(questionEl.querySelectorAll("input:checked")).map(input => Number(input.value)).sort((a, b) => a - b);
+        if (!checked.length) return;
+        const correct = [...question.answer].sort((a, b) => a - b);
+        isCorrect = JSON.stringify(checked) === JSON.stringify(correct);
+        questionEl.querySelectorAll(".option").forEach(option => {
+          const idx = Number(option.dataset.optionIndex);
+          const selected = questionEl.querySelector(`input[value="${idx}"]`).checked;
+          if (correct.includes(idx)) option.classList.add("correct-answer");
+          if (selected && !correct.includes(idx)) option.classList.add("wrong-answer");
+        });
+      } else {
+        const userValue = questionEl.querySelector("textarea").value.trim();
+        if (!userValue) return;
+        isCorrect = evaluateText(question, userValue);
+      }
+
+      feedback.classList.add("show");
+      if (isCorrect) {
+        questionEl.classList.add("correct");
+        status.textContent = "✔ Correct";
+        status.className = "feedback-status correct";
+        score.correct += 1;
+      } else {
+        questionEl.classList.add("wrong");
+        status.textContent = "✘ Wrong";
+        status.className = "feedback-status wrong";
+        answerLine.textContent = `Correct Answer: ${getCorrectAnswerText(question)}`;
+        score.wrong += 1;
+      }
+
+      checkedCurrent = true;
+      lockCurrentInputs();
+      nextBtn.disabled = false;
+      checkBtn.disabled = true;
+      checkBtn.style.opacity = "0.6";
+      checkBtn.style.cursor = "not-allowed";
+    }
+
+    function showResults() {
+      completed = true;
+      const percentage = ((score.correct / totalQuestionCount) * 100).toFixed(2);
+      document.getElementById("totalCorrect").textContent = score.correct;
+      document.getElementById("totalWrong").textContent = score.wrong;
+      document.getElementById("scoreValue").textContent = `${score.correct} / ${totalQuestionCount}`;
+      document.getElementById("percentageValue").textContent = `${percentage}%`;
+      document.getElementById("resultsSummary").textContent = `You answered ${score.correct} correctly and ${score.wrong} incorrectly.`;
+      resultsEl.classList.remove("hidden");
+      resultsEl.scrollIntoView({ behavior: "smooth", block: "start" });
+      questionHost.innerHTML = "";
+      checkBtn.disabled = true;
+      nextBtn.disabled = true;
+      updateProgress();
+    }
+
+    function goNext() {
+      if (!checkedCurrent || completed) return;
+      currentIndex += 1;
+      if (currentIndex >= totalQuestionCount) {
+        showResults();
+        return;
+      }
+      renderQuestion();
+    }
+
+    function resetQuiz() {
+      currentIndex = 0;
+      checkedCurrent = false;
+      completed = false;
+      score = { correct: 0, wrong: 0 };
+      resultsEl.classList.add("hidden");
+      document.getElementById("totalCorrect").textContent = "0";
+      document.getElementById("totalWrong").textContent = "0";
+      document.getElementById("scoreValue").textContent = `0 / ${totalQuestionCount}`;
+      document.getElementById("percentageValue").textContent = "0%";
+      document.getElementById("resultsSummary").textContent = "Finish the quiz to see your final score.";
+      renderQuestion();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    renderQuestion();
+    checkBtn.addEventListener("click", checkCurrentAnswer);
+    nextBtn.addEventListener("click", goNext);
+    resetBtn.addEventListener("click", resetQuiz);
+  </script>
+</body>
+</html>

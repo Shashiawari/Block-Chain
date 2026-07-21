@@ -259,7 +259,8 @@
   <div class="shell">
     <section class="panel hero">
       <h1>Blockchain Quiz</h1>
-     
+      <p class="subtext">Built from <code>BLOCKCHAIN.pdf</code> with both fill-in-the-blank and MCQ practice in one page.</p>
+      <p class="note">A few questions still reflect OCR artifacts from the PDF, but the answer keys were cleaned where the source text was obvious.</p>
       <div class="stats">
         <div class="stat">
           <div class="stat-label">Questions</div>
@@ -310,9 +311,599 @@
     </section>
   </div>
 
-  <script src="./blockchain_dataset.js"></script>
   <script>
-    const rawSections = window.blockchainSections || [];
+    const rawSections = [
+  {
+    "title": "Blockchain Questions",
+    "code": "BC1",
+    "questions": [
+      {
+        "number": "1",
+        "type": "text",
+        "points": 1,
+        "prompt": "What Is true about the concept of peer-to-peer networks?",
+        "answer": "Peer-to-peer applications allow their users to control how many node connections should be searched 4 for or allowed at the same time. A peer-to-peer network is a centralized communication model that can establish communication to all & other nodes, The computers of some users are both providers and consumers of resources",
+        "aliases": []
+      },
+      {
+        "number": "2",
+        "type": "text",
+        "points": 1,
+        "prompt": "What are advantages of peer-to-peer networks?",
+        "answer": "Velocity; Transparency o",
+        "aliases": []
+      },
+      {
+        "number": "3",
+        "type": "text",
+        "points": 1,
+        "prompt": "What is true about blockchains?",
+        "answer": "Consensus ensures that all copies of the distributed ledger use the same state",
+        "aliases": []
+      },
+      {
+        "number": "4",
+        "type": "text",
+        "points": 1,
+        "prompt": "List potential benefits of distributed ledger technology",
+        "answer": "Faster transactions, reduced costs, enhanced security, and improved transparency",
+        "aliases": []
+      },
+      {
+        "number": "5",
+        "type": "text",
+        "points": 1,
+        "prompt": "What are the disadvantages of distributed systems compared to central individual computers?",
+        "answer": "Coordination effort Pe Gxemmtctenciice Lower security concerns Higher reliability",
+        "aliases": []
+      },
+      {
+        "number": "6",
+        "type": "text",
+        "points": 1,
+        "prompt": "Describe primary characteristics of blockchain or distributed ledger",
+        "answer": "Decentralized, tamper-proof data storage and transmission",
+        "aliases": []
+      },
+      {
+        "number": "7",
+        "type": "text",
+        "points": 1,
+        "prompt": "who solves the hash puzzle represents the majority ands thus allowed to propose a 8 A transaction for posting to the blockchain. How is this mechanism called?",
+        "answer": "Proof of work Proof-of-majority Proof-of-honesty",
+        "aliases": []
+      },
+      {
+        "number": "8",
+        "type": "text",
+        "points": 1,
+        "prompt": "which are valid standard methods?",
+        "answer": "Proof of authority",
+        "aliases": []
+      },
+      {
+        "number": "9",
+        "type": "text",
+        "points": 1,
+        "prompt": "What are the characteristics of cryptocurrency transactions?",
+        "answer": "They involve peer-to-peer (P2P) network monitoring. They require physical representation of currency; They use strongly encrypted hash codes. ww oe = sskeS4 60 1 * 916 CEE: i Semin / Tr 40m oy Sans ye ofmin Al4",
+        "aliases": []
+      },
+      {
+        "number": "10",
+        "type": "text",
+        "points": 1,
+        "prompt": "What is the consequence of changing a block's information in a blockchain?",
+        "answer": "o Breaks the hash sequence, disrupting consensus",
+        "aliases": []
+      },
+      {
+        "number": "11",
+        "type": "text",
+        "points": 1,
+        "prompt": "What happens if consensus Is not reached in a blockchain network?",
+        "answer": "No new blocks are added until the issue is resolved",
+        "aliases": []
+      },
+      {
+        "number": "12",
+        "type": "text",
+        "points": 1,
+        "prompt": "which of the following?",
+        "answer": "Supply chain transparency QB voting systems News channels None of the above",
+        "aliases": []
+      },
+      {
+        "number": "13",
+        "type": "text",
+        "points": 1,
+        "prompt": "What does the Byzantine Generals Problem illustrate in the context of blockchain?",
+        "answer": "The challenges of achieving consensus among distributed peers The importance of encryption in communications",
+        "aliases": []
+      },
+      {
+        "number": "14",
+        "type": "text",
+        "points": 1,
+        "prompt": "Why does the Byzantine Generals Problem relate to blockchain technology?",
+        "answer": "It demonstrates the difficulty of achieving consensus in a decentralized environment, especially e when there is a possibilty of betrayal or misinformation among peers",
+        "aliases": []
+      },
+      {
+        "number": "15",
+        "type": "text",
+        "points": 1,
+        "prompt": "Which aspects are critical to maintaining integrity in blockchain systems?",
+        "answer": "Knowledge of the number of peers; Knowledge of the trustworthiness of peers Use of public ledgers Use of private keys",
+        "aliases": []
+      },
+      {
+        "number": "16",
+        "type": "text",
+        "points": 1,
+        "prompt": "How does blockchain prevent the double spending of digital assets?",
+        "answer": "By synchronizing ledgers to Ww update all transactions in real-time, preventing AS ° 4",
+        "aliases": []
+      },
+      {
+        "number": "17",
+        "type": "text",
+        "points": 1,
+        "prompt": "What is essential for proof of ownership in blockchain technology?",
+        "answer": "Identification of the owner and the object",
+        "aliases": []
+      },
+      {
+        "number": "18",
+        "type": "text",
+        "points": 1,
+        "prompt": "Which tasks must blockchain software manage in a peer-to-peer environment?",
+        "answer": "Resolving conflicts between transaction histories Enhancing the speed of transaction verification",
+        "aliases": []
+      },
+      {
+        "number": "19",
+        "type": "text",
+        "points": 1,
+        "prompt": "What does double spending exploit in blockchain systems?",
+        "answer": "The time delay in updating and synchronizing transaction information",
+        "aliases": []
+      },
+      {
+        "number": "20",
+        "type": "text",
+        "points": 1,
+        "prompt": "What does semantic correctness in transaction processing focus on?",
+        "answer": "The intended effect of transaction data, The fee payable for executing a transaction",
+        "aliases": []
+      },
+      {
+        "number": "21",
+        "type": "text",
+        "points": 1,
+        "prompt": "How is this tree structure often called in blockchain?",
+        "answer": "Merkle Tree",
+        "aliases": []
+      },
+      {
+        "number": "22",
+        "type": "text",
+        "points": 1,
+        "prompt": "Which of the following are criteria for adding transaction data to the Blockchain?",
+        "answer": "Formal correctness. / & Semantic correctness. 'Amount of fee paid. Hash authorization. spect shes oa 1 * 016 CE: i The 16min./ The 40mn. 7 \"one 55 min lg",
+        "aliases": []
+      },
+      {
+        "number": "23",
+        "type": "text",
+        "points": 1,
+        "prompt": "Which of the following re statements are correct statements about hash values?",
+        "answer": "Hashing is used to compare data by comparing its content piece by piece. v All cryptographic hash values cifer, athe data under consideration are also diferent VY. Iftwo or more of the cryptographic hash values are identical, their corresponding input data Is also identical [Any manipulation of the underlying data can be detected because the time stamp of the hash value differs",
+        "aliases": []
+      },
+      {
+        "number": "24",
+        "type": "text",
+        "points": 1,
+        "prompt": "How is this tree 4 structure often called in blockchain?",
+        "answer": "Merkle Tree",
+        "aliases": []
+      },
+      {
+        "number": "25",
+        "type": "text",
+        "points": 1,
+        "prompt": "What is the primary function of hash references in maintaining data integrity?",
+        "answer": "c To speed up data retrieval (of > Toarnroticadceteam nena To increase the data storage capacity",
+        "aliases": []
+      },
+      {
+        "number": "26",
+        "type": "text",
+        "points": 1,
+        "prompt": "How do corrupted hash references indicate data integrity issues?",
+        "answer": "lad -4 They enhance data encryption. They have no impact on data integrity. Re)",
+        "aliases": []
+      },
+      {
+        "number": "27",
+        "type": "text",
+        "points": 1,
+        "prompt": "Which properties of cryptographic hash functions are essential for blockchain security?",
+        "answer": "Deterministic nature Reverse engineering capability V. & Collision-proof characteristics Predictability of hash values ww) ere shes oa 1 * 016 CE i | 1h. 30 min. 1 hr, 40 min, 35° BR sons. GR ssmin",
+        "aliases": []
+      },
+      {
+        "number": "28",
+        "type": "text",
+        "points": 1,
+        "prompt": "What are the primary functions of hash references in blockchain technology?",
+        "answer": "lad — v & Ensuring data integrity Accelerating data retrieval Preventing data encryption",
+        "aliases": []
+      },
+      {
+        "number": "29",
+        "type": "text",
+        "points": 1,
+        "prompt": "Describe the role of hash puzzles in blockchain",
+        "answer": "Proof of work",
+        "aliases": []
+      },
+      {
+        "number": "30",
+        "type": "text",
+        "points": 1,
+        "prompt": "Explain the significance of Merkle trees",
+        "answer": "Efficient Grouping and access",
+        "aliases": []
+      },
+      {
+        "number": "31",
+        "type": "text",
+        "points": 1,
+        "prompt": "Which qualities has an encryption method that is based on the pairwise use oftwokeys, private key A and a public key. With the private key, data is encrypted or a digital signature is generated. With the 8 public key you can encrypt data and check generated signatures for their authenticity?",
+        "answer": "asymmetric 7 & being cated pubc key method being called private key method symmetric",
+        "aliases": []
+      },
+      {
+        "number": "32",
+        "type": "text",
+        "points": 1,
+        "prompt": "What distinguishes asymmetric cryptography from symmetric cryptography?",
+        "answer": "Itutilizes two complementary keys for encryption and decryption; Itemploys complex algorithms for data transmission",
+        "aliases": []
+      },
+      {
+        "number": "33",
+        "type": "text",
+        "points": 1,
+        "prompt": "What are the primary functions of public and private keys in asymmetric cryptography?",
+        "answer": "a Creating digital signatures and encrypting data. V. & Decrypting messages and authorizing transactions",
+        "aliases": []
+      },
+      {
+        "number": "34",
+        "type": "text",
+        "points": 1,
+        "prompt": "Describe the main steps of creating a digital signature in asymmetric cryptography",
+        "answer": "transaction, hash, encrypt, link",
+        "aliases": []
+      },
+      {
+        "number": "35",
+        "type": "text",
+        "points": 1,
+        "prompt": "Explain briefly how digital signatures verify the authenticity of messages",
+        "answer": "Create hash, decrypt signature, compare hashes",
+        "aliases": []
+      },
+      {
+        "number": "36",
+        "type": "text",
+        "points": 1,
+        "prompt": "What is the primary purpose of a private key in asymmetric cryptography?",
+        "answer": "Decrypting encrypted text",
+        "aliases": []
+      },
+      {
+        "number": "37",
+        "type": "text",
+        "points": 1,
+        "prompt": "What is the significance of creating a digital signature for a transaction in blockchain?",
+        "answer": "ag -4 Identifying the recipient of the transaction. Encrypting the transaction data",
+        "aliases": []
+      },
+      {
+        "number": "38",
+        "type": "text",
+        "points": 1,
+        "prompt": "How does asymmetric cryptography ensure secure communication between parties?",
+        "answer": "By ensuring only the owner of the private key can decrypt encrypted text",
+        "aliases": []
+      },
+      {
+        "number": "39",
+        "type": "text",
+        "points": 1,
+        "prompt": "Describe the consequences of modifying a transaction in the blockchain",
+        "answer": "Entire blockchain becomes invalid",
+        "aliases": []
+      },
+      {
+        "number": "40",
+        "type": "text",
+        "points": 1,
+        "prompt": "What happens if hash reference within a block header is modified?",
+        "answer": "The entire block becomes invalid. Only the referenced transaction becomes invalid",
+        "aliases": []
+      },
+      {
+        "number": "41",
+        "type": "text",
+        "points": 1,
+        "prompt": "What happens when a transaction is replaced within the blockchain?",
+        "answer": "The entre Merkle tree structure is invalidated. Only the replaced transaction becomes invalid; The block containing the replaced transaction becomes invalid. The blockchain remains intact",
+        "aliases": []
+      },
+      {
+        "number": "42",
+        "type": "text",
+        "points": 1,
+        "prompt": "Explain the process of ensuring data integrity when modifying transactions",
+        "answer": "Update all hash references in sequence",
+        "aliases": []
+      },
+      {
+        "number": "43",
+        "type": "text",
+        "points": 1,
+        "prompt": "who check the correctness of the transactions. Which of the following are 3 types of correctness that are checked by the validators?",
+        "answer": "Semantic correctness; Corecess of authorization Correctness of authentication Verification correctness w er sskeS4 60 1 * 916 CS i | >) 45 min. /1 hr. 40 min. 35 Baines. GR amin",
+        "aliases": []
+      },
+      {
+        "number": "44",
+        "type": "text",
+        "points": 1,
+        "prompt": "Which concept s described here: \"The communication between individuals in which the question arises 8 under which circumstances signals can be honest or dishonest. The candidate has to do something Bo expensive and difficult, such as robbing a store or getting a gang symbol tattooed. Then she or he is c considered trustworthy",
+        "answer": "Costly Signaling",
+        "aliases": []
+      },
+      {
+        "number": "45",
+        "type": "text",
+        "points": 1,
+        "prompt": "What is the role of validators in a blockchain?",
+        "answer": "To check the correctness of transactions NE",
+        "aliases": []
+      },
+      {
+        "number": "46",
+        "type": "text",
+        "points": 1,
+        "prompt": "Which consensus mechanism combines Proof of Work (PoW) with Proof of Stake (PoS)?",
+        "answer": "Proof of Activity (PoAc) Proof of Stake (PoS)",
+        "aliases": []
+      },
+      {
+        "number": "47",
+        "type": "text",
+        "points": 1,
+        "prompt": "What is one of the ways to punish actors campromising the integrity of the blockchain?",
+        "answer": "Rechiming the reward for inva blocks Increasing their chances of being selected",
+        "aliases": []
+      },
+      {
+        "number": "48",
+        "type": "text",
+        "points": 1,
+        "prompt": "What characteristic distinguishes Proof of Importance (Pol) from Proof of Stake (PoS)",
+        "answer": "baad Wealth of the actors 4 Random selection of validators Active participation in the network",
+        "aliases": []
+      },
+      {
+        "number": "49",
+        "type": "text",
+        "points": 1,
+        "prompt": "Explain the concept of consensus in a blockchain",
+        "answer": "'Agreement among network participants on the validity of transactions. RC) —— ae 5 PEC 3) 25min! 1h4omn, COR aims Gp amin. Ta",
+        "aliases": []
+      },
+      {
+        "number": "50",
+        "type": "text",
+        "points": 1,
+        "prompt": "What is the main drawback of Proof of Work (PoW) consensus mechanism?",
+        "answer": "High energy consumption and computational intensity. ame OeGA A OO ew eg",
+        "aliases": []
+      },
+      {
+        "number": "51",
+        "type": "text",
+        "points": 1,
+        "prompt": "Who decides which branch of a blockchain to expand when there's a fork?",
+        "answer": "The actor who first solves the puzzle of a new block. pice seo ; * 516 he. 6 min. 1 he. 40min, 35 ER athrs. GR armin",
+        "aliases": []
+      },
+      {
+        "number": "52",
+        "type": "text",
+        "points": 1,
+        "prompt": "What determines which branch of a blockchain is expanded when there is a fork?",
+        "answer": "a c Coincidence RR > aac Random selection",
+        "aliases": []
+      },
+      {
+        "number": "53",
+        "type": "text",
+        "points": 1,
+        "prompt": "Which criteria are used to determine the valid transaction sequence in a blockchain?",
+        "answer": "Thecriterion of the longest chain GB The criterion of the heaves chain Random selection Consensus among all actors Rey er sskeS4 60 1 x ole [vvvevooocrece LE 2he. 6min. 71 he. 40min. 35° BR anes. Gp 47min",
+        "aliases": []
+      },
+      {
+        "number": "54",
+        "type": "text",
+        "points": 1,
+        "prompt": "How does the blockchain ensure resistance against manipulation?",
+        "answer": "L/ By enforcing strict consensus rules A <",
+        "aliases": []
+      },
+      {
+        "number": "55",
+        "type": "text",
+        "points": 1,
+        "prompt": "What happens to orphaned blocks in a blockchain?",
+        "answer": "Theyare abandoned by the actors",
+        "aliases": []
+      },
+      {
+        "number": "56",
+        "type": "text",
+        "points": 1,
+        "prompt": "How are orphaned blocks handled in a blockchain?",
+        "answer": "Theyare abandoned by the actors 4; Theyare reclaimed for remuneration They are processed to become part of the authorized history They are used to extend the blockchain",
+        "aliases": []
+      },
+      {
+        "number": "57",
+        "type": "text",
+        "points": 1,
+        "prompt": "What are the consequences of selecting a chain as the authoritative version of transaction data?",
+        "answer": "v) Clarification of ownership Preparation of transactions",
+        "aliases": []
+      },
+      {
+        "number": "58",
+        "type": "text",
+        "points": 1,
+        "prompt": "What is a smart contract? Give a brief definition",
+        "answer": "'A smart contract is a computer protocol that determines interactions between actors in any type a of blockchain",
+        "aliases": []
+      },
+      {
+        "number": "59",
+        "type": "text",
+        "points": 1,
+        "prompt": "What is the core function of a smart contract?",
+        "answer": "Regulates transaction details",
+        "aliases": []
+      },
+      {
+        "number": "60",
+        "type": "text",
+        "points": 1,
+        "prompt": "What distinguishes public and private blockchains?",
+        "answer": "Access permissions and consensus mechanisms Re) sen oem a « o00 gg2t",
+        "aliases": []
+      },
+      {
+        "number": "61",
+        "type": "text",
+        "points": 1,
+        "prompt": "Which design parameters should be considered when developing blockchain applications?",
+        "answer": "Public vs. private blockchain Network speed Proof-of Work vs. Proof-of Stake ww save ' oemaa «eae =",
+        "aliases": []
+      },
+      {
+        "number": "62",
+        "type": "text",
+        "points": 1,
+        "prompt": "Which approaches are used to balance security and speed in blockchain systems?",
+        "answer": "Proof ofWork Pow); Permissioned blockchains Data obfuscation techniques w sem evaa 6 Ow ue ere sskeS4 60 1 x 9 6 CE: i | pon WH Caen ABORT Nhl ome > Ss itv.37min./1hr.40mn, GQ. 35 £2 ain GR acm",
+        "aliases": []
+      },
+      {
+        "number": "63",
+        "type": "text",
+        "points": 1,
+        "prompt": "What is the role of the private key in blockchain security?",
+        "answer": "Authorizes ownership and transactions",
+        "aliases": []
+      },
+      {
+        "number": "64",
+        "type": "text",
+        "points": 1,
+        "prompt": "What poses a challenge to blockchain scalability?",
+        "answer": "Solving hash puzzles Network latency",
+        "aliases": []
+      },
+      {
+        "number": "65",
+        "type": "text",
+        "points": 1,
+        "prompt": "how does « smart contract dfer from a traditional legal contrac",
+        "answer": "Protocol-based; Automated execution",
+        "aliases": []
+      },
+      {
+        "number": "66",
+        "type": "text",
+        "points": 1,
+        "prompt": "What are the challenges of ensuring data privacy in blockchains?",
+        "answer": "Regulatory compliance 4 Network congestion; Lack of flexibility Consensus mechanism efficiency",
+        "aliases": []
+      },
+      {
+        "number": "67",
+        "type": "text",
+        "points": 1,
+        "prompt": "What kind of instrument is mentioned here to store the money handled by the microtransaction?",
+        "answer": "Digital Wallet pfermodulepavter : smcoss93dtin x 9 6 CE: i 2) 'Thr. min. 11 hr. 40 min, 35 6shes. GR $5825. la",
+        "aliases": []
+      },
+      {
+        "number": "68",
+        "type": "text",
+        "points": 1,
+        "prompt": "How can smart contracts benefit the healthcare industry?",
+        "answer": "Bypreventing incorrect payments and fraud",
+        "aliases": []
+      },
+      {
+        "number": "69",
+        "type": "text",
+        "points": 1,
+        "prompt": "What challenges are associated with the consensus mechanism in blockchain design?",
+        "answer": "Addressing environmental impact Managing network congestion",
+        "aliases": []
+      },
+      {
+        "number": "70",
+        "type": "text",
+        "points": 1,
+        "prompt": "How can blockchain technology enhance transparency and efficiency in supply chains?",
+        "answer": "By providing secure and transparent tracking of supply chain data among all stakeholders. er : smcoss93dtin * o1CE: i | Dp Vr. 7 min. 11 hr. 40 min. 35° BR oshrs. Gp srz2sec",
+        "aliases": []
+      },
+      {
+        "number": "71",
+        "type": "text",
+        "points": 1,
+        "prompt": "What is a key advantage of using blockchain in the automotive industry?",
+        "answer": "Storing easily accessible information about vehicle maintenance and ownership history Enhancing fuel efficiency",
+        "aliases": []
+      },
+      {
+        "number": "72",
+        "type": "text",
+        "points": 1,
+        "prompt": "What practical considerations are important in blockchain integration?",
+        "answer": "Striving for interoperability with existing systems Minimizing regulatory compliance requirements",
+        "aliases": []
+      },
+      {
+        "number": "73",
+        "type": "text",
+        "points": 1,
+        "prompt": "How do different consensus mechanisms affect blockchain performance?",
+        "answer": "4 VY. & Proof of Stake (PoS) enables faster transactions at the expense of security VY. & Proof of Work (PoW) offers security but sacrifices scalability Proof of Honesty (PoH) provides higher scalability but lower transaction speeds",
+        "aliases": []
+      }
+    ]
+  }
+];
 
     const overrides = {
       "What Is true about the concept of peer-to-peer networks?": {
